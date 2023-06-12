@@ -38,6 +38,27 @@ public class Students extends Person {
         return studentRatings;
     }
 
-  
+    public void setStudentCode(String studentCode) {
+        this.studentCode = studentCode;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public void setSpecializationMajors(String specializationMajors) {
+        this.specializationMajors = specializationMajors;
+    }
+
+    public void setStudentRatings(int studentRatings) {
+        this.studentRatings = studentRatings;
+    }
+
+    @Override
+    public void setIdNumber(String idNumber) {
+    super.setIdNumber(idNumber);
+}
+
+    
     
 }

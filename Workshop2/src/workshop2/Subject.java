@@ -1,19 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package workshop2;
 
-/**
- *
- * @author Son
- */
+
 public class Subject extends Document {
     String subjectCode;
     int numOfCredit;
     String title;
     String references;
+
+    public Subject(String nameDocument, String author, String yearOfPublication, int coverPrice) {
+        super(nameDocument, author, yearOfPublication, coverPrice);
+    }
+    
 
     public Subject(String subjectCode, int numOfCredit, String title, String references, String nameDocument, String author, String yearOfPublication, int coverPrice) {
         super(nameDocument, author, yearOfPublication, coverPrice);

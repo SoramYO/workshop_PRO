@@ -5,6 +5,9 @@ public class Graduates {
     String positions;
     int salary;
 
+    public Graduates() {
+    }
+
     public Graduates(String positions, int salary) {
         this.positions = positions;
         this.salary = salary;

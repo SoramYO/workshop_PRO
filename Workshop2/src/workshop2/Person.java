@@ -18,14 +18,6 @@ public Person(){
         this.phoneNumber = phoneNumber;
     }
 
-    public void setEmail(String newEmail) {
-        this.email = newEmail;
-    }
-
-    public void setPhoneNumber(String newPhoneNumber) {
-        this.phoneNumber = newPhoneNumber;
-    }
-
     public String getFullName() {
         return fullName;
     }
@@ -45,5 +37,27 @@ public Person(){
     public String getPhoneNumber() {
         return phoneNumber;
     }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public void setIdNumber(String idNumber) {
+        this.idNumber = idNumber;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    
 }
 

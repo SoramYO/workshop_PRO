@@ -10,6 +10,9 @@ public class Address {
     String province;
     String city;
 
+    public Address() {
+    }
+    
     public Address(int houseNumber, String streetName, String ward, String district, String province, String city) {
         this.houseNumber = houseNumber;
         this.streetName = streetName;

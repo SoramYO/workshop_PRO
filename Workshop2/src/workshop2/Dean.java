@@ -1,9 +1,12 @@
 
 package workshop2;
 
-public class Dean {
+public class Dean extends Instructor {
     String tenureInYears;
     String membersAchievements;
+
+    public Dean() {
+    }
 
     public Dean(String tenureInYears, String membersAchievements) {
         this.tenureInYears = tenureInYears;

@@ -9,6 +9,10 @@ public class Instructor extends Person {
     private float salary;
     private String workingPosition;
 
+    public Instructor() {
+        super();
+    }
+   
     public Instructor(String fullName, String idNumber, String address, String email, String phoneNumber, String instructorCode, String specializationSubject, int yearsOfExperience, float salary, String workingPosition) {
         super(fullName, idNumber, address, email, phoneNumber);
         this.instructorCode = instructorCode;
