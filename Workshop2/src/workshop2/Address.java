@@ -1,4 +1,3 @@
-
 package workshop2;
 
 
@@ -12,7 +11,7 @@ public class Address {
 
     public Address() {
     }
-    
+
     public Address(int houseNumber, String streetName, String ward, String district, String province, String city) {
         this.houseNumber = houseNumber;
         this.streetName = streetName;
@@ -69,6 +68,11 @@ public class Address {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    @Override
+    public String toString() {
+        return "Address{" + "houseNumber=" + houseNumber + ", streetName=" + streetName + ", ward=" + ward + ", district=" + district + ", province=" + province + ", city=" + city + '}';
     }
     
 }

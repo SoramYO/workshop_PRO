@@ -8,9 +8,6 @@ public class Document {
     String yearOfPublication;
     int coverPrice;
 
-    public Document() {
-    }
-
     public Document(String nameDocument, String author, String yearOfPublication, int coverPrice) {
         this.nameDocument = nameDocument;
         this.author = author;
@@ -48,6 +45,11 @@ public class Document {
 
     public void setCoverPrice(int coverPrice) {
         this.coverPrice = coverPrice;
+    }
+
+    @Override
+    public String toString() {
+        return "Document{" + "nameDocument=" + nameDocument + ", author=" + author + ", yearOfPublication=" + yearOfPublication + ", coverPrice=" + coverPrice + '}';
     }
 
     

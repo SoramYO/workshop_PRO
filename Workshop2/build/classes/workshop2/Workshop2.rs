@@ -1,2 +1,0 @@
-workshop2.MyObject
-workshop2.Workshop2

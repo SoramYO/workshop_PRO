@@ -1,18 +1,11 @@
-
 package workshop2;
 
-import java.util.List;
-
 public class Students extends Person {
+
     private String studentCode;
     private String key;
     private String specializationMajors;
     private int studentRatings;
-
-    public Students() {
-        super();
-    }
-    
 
     public Students(String fullName, String idNumber, String address, String email, String phoneNumber, String studentCode, String key, String specializationMajors, int studentRatings) {
         super(fullName, idNumber, address, email, phoneNumber);
@@ -55,10 +48,16 @@ public class Students extends Person {
     }
 
     @Override
-    public void setIdNumber(String idNumber) {
-    super.setIdNumber(idNumber);
-}
+    public String toString() {
+        return "Name: " + getFullName()
+                + "\nID Number: " + getIdNumber()
+                + "\nAddress: " + getAddress()
+                + "\nEmail: " + getEmail()
+                + "\nPhone Number: " + getPhoneNumber()
+                + "\nStudent Code: " + getStudentCode()
+                + "\nKey: " + getKey()
+                + "\nSpecialization Major: " + getSpecializationMajors()
+                + "\nStudent Ratings: " + getStudentRatings();
+    }
 
-    
-    
 }

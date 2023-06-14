@@ -58,6 +58,11 @@ public Person(){
         this.phoneNumber = phoneNumber;
     }
 
+    @Override
+    public String toString() {
+        return "Person{" + "fullName=" + fullName + ", idNumber=" + idNumber + ", address=" + address + ", email=" + email + ", phoneNumber=" + phoneNumber + '}';
+    }
+
     
 }
 

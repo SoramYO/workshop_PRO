@@ -6,14 +6,10 @@ public class Instructor extends Person {
     private String instructorCode;
     private String specializationSubject;
     private int yearsOfExperience;
-    private float salary;
+    private double salary;
     private String workingPosition;
 
-    public Instructor() {
-        super();
-    }
-   
-    public Instructor(String fullName, String idNumber, String address, String email, String phoneNumber, String instructorCode, String specializationSubject, int yearsOfExperience, float salary, String workingPosition) {
+    public Instructor(String fullName, String idNumber, String address, String email, String phoneNumber, String instructorCode, String specializationSubject, int yearsOfExperience, double salary, String workingPosition) {
         super(fullName, idNumber, address, email, phoneNumber);
         this.instructorCode = instructorCode;
         this.specializationSubject = specializationSubject;
@@ -34,12 +30,46 @@ public class Instructor extends Person {
         return yearsOfExperience;
     }
 
-    public float getSalary() {
+    public double getSalary() {
         return salary;
     }
 
     public String getWorkingPosition() {
         return workingPosition;
+    }
+
+    public void setInstructorCode(String instructorCode) {
+        this.instructorCode = instructorCode;
+    }
+
+    public void setSpecializationSubject(String specializationSubject) {
+        this.specializationSubject = specializationSubject;
+    }
+
+    public void setYearsOfExperience(int yearsOfExperience) {
+        this.yearsOfExperience = yearsOfExperience;
+    }
+
+    public void setSalary(double salary) {
+        this.salary = salary;
+    }
+
+    public void setWorkingPosition(String workingPosition) {
+        this.workingPosition = workingPosition;
+    }
+
+    @Override
+    public String toString() {
+        return "Name: " + getFullName()
+                + "\nID Number: " + getIdNumber()
+                + "\nAddress: " + getAddress()
+                + "\nEmail: " + getEmail()
+                + "\nPhone Number: " + getPhoneNumber()
+                + "\nInstructor Code: " + getInstructorCode()
+                + "\nSpecialization Subject: " + getSpecializationSubject()
+                + "\nYears Of Experience: " + getYearsOfExperience()
+                + "\nSalary: " + getSalary()
+                + "\nWorking Position: " +  getWorkingPosition();
     }
 }
 

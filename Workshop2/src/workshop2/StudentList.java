@@ -1,28 +1,25 @@
 package workshop2;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class StudentList {
 
-    Students[] list;
-
-    int numOfStudent;
-    final int MAX = 10;
+    private final ArrayList<Students> studentList;
 
     public StudentList() {
-        list = new Students[MAX];
-        numOfStudent = 0;
+        this.studentList = new ArrayList<>();
     }
 
-    public void addStudent(Students Students) {
-        if (Students == null || numOfStudent >= MAX) {
+    public void addStudent(Students student) {
+
+        if (this.studentList.size() >= 10) {
             System.out.println("Error: student list is full");
             return;
         }
-        list[numOfStudent] = Students;
-        numOfStudent++;
+        this.studentList.add(student);
     }
 
     public void updateStudent(String fullName) {
@@ -70,9 +67,13 @@ public class StudentList {
             }
 
             System.out.println("Update student ratings (" + studentToUpdate.getStudentRatings() + "):");
-            rate = sc.nextInt();
-            if (rate >= 0) {
-                studentToUpdate.setStudentRatings(rate);
+            try {
+                rate = sc.nextInt();
+                if (rate >= 0) {
+                    studentToUpdate.setStudentRatings(rate);
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Rating must be an integer.");
             }
         } else {
             System.out.println("Error: student not found.");
@@ -80,67 +81,90 @@ public class StudentList {
     }
 
     public void deleteStudent(String fullName) {
-        for (int i = 0; i < numOfStudent; i++) {
-            if (list[i].getFullName().equals(fullName)) {
-                // Shift all elements to the left of the deleted element
-                for (int j = i; j < numOfStudent - 1; j++) {
-                    list[j] = list[j + 1];
-                }
-                list[numOfStudent - 1] = null;
-                numOfStudent--;
-                System.out.println("Student " + fullName + " has been deleted.");
-                return;
+        Students studentToDelete = searchStudentByName(fullName);
+
+        if (studentToDelete != null) {
+            this.studentList.remove(studentToDelete);
+            System.out.println("Student " + fullName + " has been deleted.\n");
+        } else {
+            System.out.println("Error: student not found.");
+        }
+    }
+
+    public Students searchStudentByName(String name) {
+        for (int i = 0; i < studentList.size(); i++) {
+             System.out.println("=================================================");
+            Students std = studentList.get(i);
+            if (std.getFullName().equalsIgnoreCase(name)) {
+                return std;
             }
+            System.out.println("=================================================");
         }
-        System.out.println("Error: student not found.");
+        return null;
     }
 
-   public Students searchStudentByName(String name) {
-    for (int i = 0; i < numOfStudent; i++) {
-        if (list[i].getFullName().equals(name)) {
-            return list[i];
+    public Students searchStudentByCode(String code) {
+        for (int i = 0; i < studentList.size(); i++) {
+             System.out.println("=================================================");
+            Students std = studentList.get(i);
+            if (std.getStudentCode().equals(code)) {
+                return std;
+            }
+            System.out.println("=================================================");
         }
+        return null;
     }
-    return null;
-}
-
-public Students searchStudentByCode(String code) {
-    for (int i = 0; i < numOfStudent; i++) {
-        if (list[i].getStudentCode().equals(code)) {
-            return list[i];
-        }
-    }
-    return null;
-}
-
-
 
     public void sortStudentByName() {
-        Arrays.sort(list, 0, numOfStudent, Comparator.comparing(Students::getFullName));
+        studentList.sort(Comparator.comparing(Students::getFullName));
+        System.out.println("Sort student list success");
+    }
+
+    public void showStudentList() {
+        System.out.println("List of students:");
+        for (int i = 0; i < studentList.size(); i++) {
+            System.out.println("Student" + (i + 1));
+            System.out.println("=================================================");
+            Students std = studentList.get(i);
+            System.out.println(std.toString());
+            System.out.println("=================================================");
+        }
     }
 
     public void input() {
         Scanner sc = new Scanner(System.in);
         String name, id, address, email, phone, code, key, major;
         int rate;
-        System.out.println("Enter full name: ");
+
+        System.out.println("\nEnter full name:");
         name = sc.nextLine();
-        System.out.println("ID: ");
+
+        System.out.println("Enter student ID:");
         id = sc.nextLine();
-        System.out.println("Address: ");
+
+        System.out.println("Enter student address:");
         address = sc.nextLine();
-        System.out.println("Email: ");
+
+        System.out.println("Enter student email:");
         email = sc.nextLine();
-        System.out.println("Phone number: ");
+
+        System.out.println("Enter student phone number:");
         phone = sc.nextLine();
-        System.out.println("Student code: ");
+
+        System.out.println("Enter student code:");
         code = sc.nextLine();
-        System.out.println("Key: ");
+
+        System.out.println("Enter student key:");
         key = sc.nextLine();
-        System.out.println("Specialization majors: ");
+
+        System.out.println("Enter specialization major:");
         major = sc.nextLine();
-        System.out.println("Student ratings : ");
+
+        System.out.println("Enter student ratings:");
         rate = sc.nextInt();
+
         Students std = new Students(name, id, address, email, phone, code, key, major, rate);
+        addStudent(std);
+        System.out.println("Add student success!\n");
     }
 }

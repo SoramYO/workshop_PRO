@@ -1,19 +1,13 @@
 
 package workshop2;
 
-
 public class Subject extends Document {
     String subjectCode;
     int numOfCredit;
     String title;
     String references;
 
-    public Subject(String nameDocument, String author, String yearOfPublication, int coverPrice) {
-        super(nameDocument, author, yearOfPublication, coverPrice);
-    }
-    
-
-    public Subject(String subjectCode, int numOfCredit, String title, String references, String nameDocument, String author, String yearOfPublication, int coverPrice) {
+    public Subject(String nameDocument, String author, String yearOfPublication, int coverPrice,String subjectCode, int numOfCredit, String title, String references) {
         super(nameDocument, author, yearOfPublication, coverPrice);
         this.subjectCode = subjectCode;
         this.numOfCredit = numOfCredit;
@@ -52,4 +46,10 @@ public class Subject extends Document {
     public void setReferences(String references) {
         this.references = references;
     }
+
+    @Override
+    public String toString() {
+        return "Subject{" + "subjectCode=" + subjectCode + ", numOfCredit=" + numOfCredit + ", title=" + title + ", references=" + references + '}';
+    }
+    
 }
