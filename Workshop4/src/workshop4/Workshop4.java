@@ -1,28 +1,57 @@
 package workshop4;
 
-import java.util.List;
+import java.util.Scanner;
 
 public class Workshop4 {
 
     public static void main(String[] args) {
-        Store store = new Store();
+        Scanner sc = new Scanner(System.in);
+        ProductList pl = new ProductList();
+        ProductView pv = new ProductView(pl);
+        Shop s = new Shop();
+        int choice;
+        String name;
 
-// Add a new product
-        Product product1 = new Product("001", "Paracetamol", 5.99, 10);
-        store.addProduct(product1);
+        do {
+            System.out.println("\n1. Add a new product");
+            System.out.println("2. Update product information");
+            System.out.println("3. A list of all available products in the Store");
+            System.out.println("4. Sort all products by product price as ascending ");
+            System.out.println("5. Print information of all products.");
+            System.out.println("6. Exit ...");
+            System.out.println("Enter your choice: ");
+            choice = sc.nextInt();
+            sc.nextLine();
 
-// Update price of a product
-        store.updatePrice("001", 6.50);
-
-// Get list of available products
-        List<Product> availableProducts = store.getAvailableProducts();
-
-// Sort products by price ascending
-        store.sortProductsByPrice();
-
-// Print information of all products
-        store.printAllProducts();
-
+            switch (choice) {
+                case 1:
+                    pv.add();
+                    break;
+                case 2:
+                    System.out.println("\nEnter student full name to update: ");
+                    name = sc.nextLine();
+                    pv.updateProduct(name);
+                    break;
+                case 3:
+                    System.out.println("List available product: ");
+                    s.showAvailableProductList();
+                    break;
+                case 4:
+                    System.out.println("All products by product price as ascending:  ");
+                    s.sortProductByName();
+                    break;
+                case 5:
+                    System.out.println("Information of all products: ");
+                    s.showProductList();
+                    break;
+                case 6:
+                    System.out.println("\nExiting program...");
+                    break;
+                default:
+                    System.out.println("\nInvalid choice. Please try again.");
+                    break;
+            }
+        } while (choice != 0);
     }
 
 }

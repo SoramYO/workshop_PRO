@@ -1,58 +1,60 @@
-
 package workshop4;
 
+public class Product {
 
-    public class Product {
-    private String productId;
-    private String productName;
-    private double productPrice;
-    private int availableQuantity;
+    private String ID;
+    private String name;
+    private double price;
+    private int availableProduct;
 
-    public Product(String productId, String productName, double productPrice, int availableQuantity) {
-        this.productId = productId;
-        this.productName = productName;
-        this.productPrice = productPrice;
-        this.availableQuantity = availableQuantity;
+    public Product() {
     }
 
-    public void updatePrice(double newPrice) {
-        this.productPrice = newPrice;
+    public Product(String ID, String name, double price, int availableProduct) {
+        this.ID = ID;
+        this.name = name;
+        this.price = price;
+        this.availableProduct = availableProduct;
     }
 
-    public String getProductId() {
-        return productId;
+    public String getID() {
+        return ID;
     }
 
-    public String getProductName() {
-        return productName;
+    public String getName() {
+        return name;
     }
 
-    public double getProductPrice() {
-        return productPrice;
+    public double getPrice() {
+        return price;
     }
 
-    public int getAvailableQuantity() {
-        return availableQuantity;
+    public int getAvailableProduct() {
+        return availableProduct;
     }
 
-    public void setProductId(String productId) {
-        this.productId = productId;
+    public void setID(String ID) {
+        this.ID = ID;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setProductPrice(double productPrice) {
-        this.productPrice = productPrice;
+    public void setPrice(double price) {
+        this.price = price;
     }
 
-    public void setAvailableQuantity(int availableQuantity) {
-        this.availableQuantity = availableQuantity;
+    public void setAvailableProduct(int availableProduct) {
+        this.availableProduct = availableProduct;
     }
 
-    public String getInfo() {
-        return productId + ", " + productName + ", $" + productPrice + ", " + availableQuantity;
+    @Override
+    public String toString() {
+        return "Name: " + getName()
+               + "\nID: " + getID()
+               + "\nPrice: " + getPrice()
+               + "\nAvailable Product: " + getAvailableProduct();
+
     }
 }
-
