@@ -1,6 +1,5 @@
 package workshop4;
 
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ProductView {
@@ -11,31 +10,31 @@ public class ProductView {
     }
 
     public void add() {
-        Scanner sc = new Scanner(System.in);
-        String id, name;
-        double price;
-        int aProduct;
+    Scanner sc = new Scanner(System.in);
+    String id, name;
+    double price;
+    int aProduct;
 
-        System.out.println("Enter product ID:");
-        id = sc.nextLine();
+    System.out.println("Enter product ID:");
+    id = sc.nextLine();
 
-        System.out.println("\nEnter full name:");
-        name = sc.nextLine();
+    System.out.println("\nEnter full name:");
+    name = sc.nextLine();
 
-        System.out.println("\nEnter price:");
-        price = sc.nextDouble();
+    System.out.println("\nEnter price:");
+    price = sc.nextDouble();
 
-        System.out.println("\nEnter available product:");
-        aProduct = sc.nextInt();
+    System.out.println("\nEnter available product:");
+    aProduct = sc.nextInt();
 
-        Product pro = new Product(id, name, price, aProduct);
-        ProductList pl = new ProductList();
-        pl.addProduct(pro);
-        System.out.println("Add product success!\n");
-    }
+    Product pro = new Product(id, name, price, aProduct);
+    pl.addProduct(pro);
+    System.out.println("Add product success!\n");
+}
+
 
     public void updateProduct(String name) {
-        Shop shop = new Shop();
+        Shop shop = new Shop(pl);
         Product productToUpdate = shop.searchProductByName(name);
 
         if (productToUpdate != null) {

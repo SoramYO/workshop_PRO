@@ -8,7 +8,7 @@ public class Workshop4 {
         Scanner sc = new Scanner(System.in);
         ProductList pl = new ProductList();
         ProductView pv = new ProductView(pl);
-        Shop s = new Shop();
+        Shop s = new Shop(pl);
         int choice;
         String name;
 
@@ -28,20 +28,17 @@ public class Workshop4 {
                     pv.add();
                     break;
                 case 2:
-                    System.out.println("\nEnter student full name to update: ");
+                    System.out.println("\nEnter product name to update: ");
                     name = sc.nextLine();
                     pv.updateProduct(name);
                     break;
                 case 3:
-                    System.out.println("List available product: ");
                     s.showAvailableProductList();
                     break;
                 case 4:
-                    System.out.println("All products by product price as ascending:  ");
                     s.sortProductByName();
                     break;
                 case 5:
-                    System.out.println("Information of all products: ");
                     s.showProductList();
                     break;
                 case 6:
@@ -51,7 +48,6 @@ public class Workshop4 {
                     System.out.println("\nInvalid choice. Please try again.");
                     break;
             }
-        } while (choice != 0);
+        } while (choice != 6);
     }
-
 }
