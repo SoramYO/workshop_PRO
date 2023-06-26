@@ -1,11 +1,9 @@
 package controller;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
 import java.io.File;
+import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 import model.Developer;
 import model.TeamLeader;
 import model.Tester;
@@ -20,102 +18,118 @@ public class CompanyManagement {
         empList = getEmployeeFromFile(path1, path2);
     }
 
+    public boolean checkTester(String info) {
+        String[] subinfo = info.split(",");
+        return subinfo[1].charAt(0) == 'T';
+    }
+
+    public boolean checkDeveloper(String info) {
+        String[] subInfo = info.split(",");
+        return subInfo[1].charAt(0) == 'D' && subInfo[5].charAt(0) != 'L';
+    }
+
+    public boolean checkTeamLeader(String info) {
+        String[] subInfo = info.split(",");
+        return subInfo[1].charAt(0) == 'D' && subInfo[5].charAt(0) == 'L';
+    }
+
+    public String languageTeamLeader(String info, List<String> language) {
+        String[] subInfo = info.split(",");
+        String s = new String();
+        for (int i = 0; i < language.size(); i++) {
+            String[] st = language.get(i).split(",");
+            if (checkTeamLeader(info) && st[0].equals(subInfo[1])) {
+                for (int j = 1; j < st.length; j++) {
+                    s += st[j] + ",";
+                }
+            }
+        }
+        return s;
+    }
+
+    public String languageDeveloper(String info, List<String> language) {
+        String[] subInfo = info.split(",");
+        String s = new String();
+        for (int i = 0; i < language.size(); i++) {
+            String[] st = language.get(i).split(",");
+            if (checkDeveloper(info) && st[0].equals(subInfo[1])) {
+                for (int j = 1; j < st.length; j++) {
+                    s += st[j] + ",";
+                }
+            }
+        }
+        return s;
+    }
+
+    public Employee getTester(String info) {
+        String[] subinfo = info.split(",");
+        return new Tester(subinfo[1], subinfo[2], Double.parseDouble(subinfo[3]), subinfo[4], Integer.parseInt(subinfo[5]));
+    }
+
+    public Employee getDeveloperAndTeamLeader(String info, List<String> language) {
+        String[] subInfo = info.split(",");
+        if (checkDeveloper(info)) {
+            String[] lang = languageDeveloper(info, language).split(",");
+            ArrayList<String> subLang = new ArrayList<>();
+            for (int i = 0; i < lang.length; i++) {
+                subLang.add(lang[i]);
+            }
+            return new Developer(subInfo[1], subInfo[2], Integer.parseInt(subInfo[5]), subInfo[3], subLang, Integer.parseInt(subInfo[4]));
+        }
+        if (checkTeamLeader(info)) {
+            String[] lang = languageTeamLeader(info, language).split(",");
+            ArrayList<String> subLang = new ArrayList<>();
+            for (int i = 0; i < lang.length; i++) {
+                subLang.add(lang[i]);
+            }
+            return new TeamLeader(subInfo[1], subInfo[2], Integer.parseInt(subInfo[7]), subInfo[3], subLang, Integer.parseInt(subInfo[4]), Double.parseDouble(subInfo[6]));
+        }
+        return null;
+    }
+
+
+
     // reads from the file into the empList
     public ArrayList<Employee> getEmployeeFromFile(String path1, String path2) throws Exception {
-        ArrayList<Employee> list = null;
-        try {
-            File fPLInfo = new File(path2);
-            String fullPath = fPLInfo.getAbsolutePath();
-            FileInputStream filePLInfo = new FileInputStream(fullPath);
-            BufferedReader myInputPLInfo;
-            myInputPLInfo = new BufferedReader(new InputStreamReader(filePLInfo));
-            HashMap<String, ArrayList<String>> hashPLInfo = null;
-            String thisLinePLInfo;
-            while ((thisLinePLInfo = myInputPLInfo.readLine()) != null) {
-                if (!thisLinePLInfo.trim().isEmpty()) {
-                    String[] split = thisLinePLInfo.split(",");
-                    if (hashPLInfo == null) {
-                        hashPLInfo = new HashMap<>();
-                    }
-                    String key = split[0].trim();
-                    ArrayList<String> plinfo = new ArrayList<>();
-                    for (int i = 1; i < split.length; i++) {
-                        plinfo.add(split[i].trim());
-                    }
-                    hashPLInfo.put(key, plinfo);
-                }
-            }
-            myInputPLInfo.close();
-            // READ EMPLOYEE
-            String thisLine;
-            BufferedReader myInputEmp;
-            File fEmp = new File(path1);
-            //System.out.println(path1);
-            fullPath = fEmp.getAbsolutePath();
-            FileInputStream fileEmp = new FileInputStream(fullPath);
-            myInputEmp = new BufferedReader(new InputStreamReader(fileEmp));
-            while ((thisLine = myInputEmp.readLine()) != null) {
-                Employee emp = null;
-                if (!thisLine.trim().isEmpty()) {
-                    String[] split = thisLine.split(",");
-                    if (split.length == 5) {
-                        String id = split[1].trim();
-                        String name = split[2].trim();
-                        String team = split[3].trim();
-                        int expY = Integer.parseInt(split[4].trim());
-                        int balS = Integer.parseInt(split[5].trim());
-                        ArrayList<String> progL = hashPLInfo.get(id);
-                        emp = new Developer(id, name, balS, team, progL, expY);
-                        System.out.println(toString());
-                    } else if (split.length == 8) {
-                        String id = split[1].trim();
-                        String name = split[2].trim();
-                        String team = split[3].trim();
-                        int expY = Integer.parseInt(split[4].trim());
-                        int balS = Integer.parseInt(split[5].trim());
-                        double bonus = Double.parseDouble(split[6].trim());
-                        ArrayList<String> progL = hashPLInfo.get(id);
-                        emp = new TeamLeader(id, name, balS, team, progL, expY, bonus);
-                        System.out.println(emp.toString());
-                    } else if (split[1].trim().charAt(0) == 'T') {
-                        String id = split[1].trim();
-                        String name = split[2].trim();
-                        double bonus = Integer.parseInt(split[3].trim());
-                        String type = split[4].trim();
-                        int balS = Integer.parseInt(split[5].trim());
-                        ArrayList<String> progL = hashPLInfo.get(id);
-                        emp = new Tester(id, name, balS, bonus, type);
-                        System.out.println(emp.toString());
-                    }
-                    if (list == null) {
-                        list = new ArrayList<>();
-                    }
-                    list.add(emp);
-                }
-            }
-            myInputEmp.close();
-        } catch (Exception ex) {
-            throw ex;
+        File file1 = new File(path1);
+        File file2 = new File(path2);
+        List<String> allEmployee = Files.readAllLines(file1.toPath());
+        List<String> allLanguage = Files.readAllLines(file2.toPath());
+        ArrayList<Employee> list = new ArrayList<>();
+        for (int i = 0; i < allEmployee.size(); i++) {
+            if(checkTester(allEmployee.get(i))) list.add(getTester(allEmployee.get(i)));
+            else list.add(getDeveloperAndTeamLeader(allEmployee.get(i), allLanguage));
         }
         return list;
     }
 
     // list of programmers who are proficient in the input pl programmingLanguage.
     public ArrayList<Employee> getDeveloperByProgrammingLanguage(String pl) {
-        ArrayList<Employee> devList = null;
+        ArrayList<Employee> devList = new ArrayList<>();
+        for (int i = 0; i < empList.size(); i++) {
+            if (empList.get(i) instanceof Developer) {
+                ArrayList<String> language = ((Developer)empList.get(i)).getProgrammingLanguages();
+                for (int j = 0; j < language.size(); j++) {
+                    if(language.get(j).equalsIgnoreCase(pl.trim())) devList.add(empList.get(i));
+                }
+            }
+        }
         return devList;
     }
 
     // list of testers whose total salary is greater than the value of the parameter
     public ArrayList<Tester> getTestersHaveSalaryGreaterThan(double value) throws Exception {
-        ArrayList<Tester> testerList = null;
-
+        ArrayList<Tester> testerList = new ArrayList<>();
+        for (int i = 0; i < empList.size(); i++) {
+            if(empList.get(i) instanceof Tester && ((Tester)empList.get(i)).getSalary() > value)
+                testerList.add((Tester) empList.get(i));
+        }
         return testerList;
     }
 
     public Employee getEmployeeWithHighestSalary() throws Exception {
         Employee highestEmp = null;
-
+        
         return highestEmp;
     }
 
