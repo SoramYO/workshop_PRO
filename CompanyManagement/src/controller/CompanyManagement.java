@@ -1,9 +1,15 @@
 package controller;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import model.Developer;
 import model.TeamLeader;
 import model.Tester;
@@ -13,9 +19,12 @@ public class CompanyManagement {
 
     private ArrayList<Employee> empList;
 
-    // Contructor and read file
     public CompanyManagement(String path1, String path2) throws Exception {
         empList = getEmployeeFromFile(path1, path2);
+    }
+
+    public ArrayList<Employee> getEmployeeList() {
+        return empList;
     }
 
     public boolean checkTester(String info) {
@@ -35,30 +44,30 @@ public class CompanyManagement {
 
     public String languageTeamLeader(String info, List<String> language) {
         String[] subInfo = info.split(",");
-        String s = new String();
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < language.size(); i++) {
             String[] st = language.get(i).split(",");
             if (checkTeamLeader(info) && st[0].equals(subInfo[1])) {
                 for (int j = 1; j < st.length; j++) {
-                    s += st[j] + ",";
+                    sb.append(st[j]).append(",");
                 }
             }
         }
-        return s;
+        return sb.toString();
     }
 
     public String languageDeveloper(String info, List<String> language) {
         String[] subInfo = info.split(",");
-        String s = new String();
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < language.size(); i++) {
             String[] st = language.get(i).split(",");
             if (checkDeveloper(info) && st[0].equals(subInfo[1])) {
                 for (int j = 1; j < st.length; j++) {
-                    s += st[j] + ",";
+                    sb.append(st[j]).append(",");
                 }
             }
         }
-        return s;
+        return sb.toString();
     }
 
     public Employee getTester(String info) {
@@ -87,9 +96,6 @@ public class CompanyManagement {
         return null;
     }
 
-
-
-    // reads from the file into the empList
     public ArrayList<Employee> getEmployeeFromFile(String path1, String path2) throws Exception {
         File file1 = new File(path1);
         File file2 = new File(path2);
@@ -97,65 +103,118 @@ public class CompanyManagement {
         List<String> allLanguage = Files.readAllLines(file2.toPath());
         ArrayList<Employee> list = new ArrayList<>();
         for (int i = 0; i < allEmployee.size(); i++) {
-            if(checkTester(allEmployee.get(i))) list.add(getTester(allEmployee.get(i)));
-            else list.add(getDeveloperAndTeamLeader(allEmployee.get(i), allLanguage));
+            if (checkTester(allEmployee.get(i))) {
+                list.add(getTester(allEmployee.get(i)));
+            } else {
+                list.add(getDeveloperAndTeamLeader(allEmployee.get(i), allLanguage));
+            }
         }
         return list;
     }
 
-    // list of programmers who are proficient in the input pl programmingLanguage.
     public ArrayList<Employee> getDeveloperByProgrammingLanguage(String pl) {
         ArrayList<Employee> devList = new ArrayList<>();
-        for (int i = 0; i < empList.size(); i++) {
-            if (empList.get(i) instanceof Developer) {
-                ArrayList<String> language = ((Developer)empList.get(i)).getProgrammingLanguages();
-                for (int j = 0; j < language.size(); j++) {
-                    if(language.get(j).equalsIgnoreCase(pl.trim())) devList.add(empList.get(i));
+        for (Employee emp : empList) {
+            if (emp instanceof Developer) {
+                Developer developer = (Developer) emp;
+                if (developer.getProgrammingLanguages().contains(pl)) {
+                    devList.add(developer);
                 }
             }
         }
         return devList;
     }
 
-    // list of testers whose total salary is greater than the value of the parameter
-    public ArrayList<Tester> getTestersHaveSalaryGreaterThan(double value) throws Exception {
+    public ArrayList<Tester> getTestersHaveSalaryGreaterThan(double value) {
         ArrayList<Tester> testerList = new ArrayList<>();
-        for (int i = 0; i < empList.size(); i++) {
-            if(empList.get(i) instanceof Tester && ((Tester)empList.get(i)).getSalary() > value)
-                testerList.add((Tester) empList.get(i));
+        for (Employee emp : empList) {
+            if (emp instanceof Tester) {
+                Tester tester = (Tester) emp;
+                if (tester.getSalary() > value) {
+                    testerList.add(tester);
+                }
+            }
         }
         return testerList;
     }
 
     public Employee getEmployeeWithHighestSalary() throws Exception {
-        Employee highestEmp = null;
-        
+        if (empList.isEmpty()) {
+            return null;
+        }
+
+        Employee highestEmp = empList.get(0);
+
+        for (Employee employee : empList) {
+            if (employee.getSalary() > highestEmp.getSalary()) {
+                highestEmp = employee;
+            }
+        }
+
         return highestEmp;
     }
 
-    // get the team leader of the group with the most programmers
-    public TeamLeader getLeaderWithMostEmployees() throws Exception {
-        TeamLeader leader = null;
-
-        return leader;
+    public TeamLeader getLeaderWithMostEmployees() {
+        Map<String, Integer> teamCount = new HashMap<>();
+        for (Employee emp : empList) {
+            if (emp instanceof Developer) {
+                Developer developer = (Developer) emp;
+                String teamName = developer.getTeamName();
+                teamCount.put(teamName, teamCount.getOrDefault(teamName, 0) + 1);
+            }
+        }
+        int maxCount = 0;
+        String teamWithMostEmployees = null;
+        for (Map.Entry<String, Integer> entry : teamCount.entrySet()) {
+            if (entry.getValue() > maxCount) {
+                maxCount = entry.getValue();
+                teamWithMostEmployees = entry.getKey();
+            }
+        }
+        if (teamWithMostEmployees != null) {
+            for (Employee emp : empList) {
+                if (emp instanceof TeamLeader) {
+                    TeamLeader leader = (TeamLeader) emp;
+                    if (leader.getTeamName().equals(teamWithMostEmployees)) {
+                        return leader;
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     // Sort Employees as descending salary
     public ArrayList<Employee> sorted() throws Exception {
-        ArrayList<Employee> sortedList = null;
+        ArrayList<Employee> sortedList = new ArrayList<>(empList);
+
+        // Implement a custom Comparator to compare employees based on their salary
+        Comparator<Employee> salaryComparator = new Comparator<Employee>() {
+            @Override
+            public int compare(Employee emp1, Employee emp2) {
+                return Double.compare(emp2.getSalary(), emp1.getSalary());
+            }
+        };
+
+        // Sort the sortedList using the salaryComparator
+        Collections.sort(sortedList, salaryComparator);
 
         return sortedList;
     }
 
-    // print empList
-    public void printEmpList() {
-        for (Employee emp : empList) {
-            System.out.println(emp);
-        }
+    public boolean writeEmployeeListToFile(String path, List<? extends Employee> employees) {
+    List<String> employeeLines = new ArrayList<>();
+    for (Employee emp : employees) {
+        employeeLines.add(emp.toString());
     }
-
-    // write emplist
-    public <E> boolean writeFile(String path, ArrayList<E> list) throws Exception {
+    try {
+        Files.write(new File(path).toPath(), employeeLines);
         return true;
+    } catch (Exception e) {
+        e.printStackTrace();
+        return false;
     }
+}
+
+
 }

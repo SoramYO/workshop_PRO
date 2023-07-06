@@ -1,6 +1,7 @@
 package model;
 
 public abstract class Employee {
+
     protected String empID;
     protected String empName;
     protected int baseSal;
@@ -27,6 +28,6 @@ public abstract class Employee {
     public String toString() {
         return "Employee{" + "empID=" + empID + ", empName=" + empName + ", baseBal=" + baseSal + '}';
     }
-    
+
     public abstract double getSalary();
 }

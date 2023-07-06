@@ -32,12 +32,14 @@ public class Developer extends Employee {
         return empID + "_" + empName + "_" + baseSal + "_" + teamName + "_" + programmingLanguages.toString() + "_" + expYear;
     }
 
-    
-
     @Override
     public double getSalary() {
-        if (expYear >= 5) return baseSal + expYear * 2000000;
-        else if (expYear >= 3 && expYear < 5 ) return baseSal + expYear * 1000000;
-        else return baseSal;
+        if (expYear >= 5) {
+            return baseSal + expYear * 2000000;
+        } else if (expYear >= 3 && expYear < 5) {
+            return baseSal + expYear * 1000000;
+        } else {
+            return baseSal;
+        }
     }
 }

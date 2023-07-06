@@ -23,9 +23,6 @@ public class Tester extends Employee {
     public String toString() {
         return empID + "_" + empName + "_" + baseSal;
     }
-    
-
-    
 
     @Override
     public double getSalary() {
